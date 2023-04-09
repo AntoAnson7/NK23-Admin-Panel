@@ -1,23 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import { useAppData } from "./AppContext/AppContext";
+import { spot_counters } from "./details";
+import Login from "./components/Login";
+import Event from "./components/Event";
+import SpotRegister from "./components/SpotRegister";
+import SuperAdmin from "./components/SuperAdmin";
+import Online from "./components/Online";
+import { useEffect } from "react";
 
 function App() {
+  const [{ e }] = useAppData();
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {e ? (
+        e == process.env.REACT_APP_ADMIN ? (
+          <SuperAdmin />
+        ) : spot_counters.includes(e) ? (
+          <SpotRegister />
+        ) : e === "ONLINE_COUNTER" ? (
+          <Online />
+        ) : (
+          <Event />
+        )
+      ) : (
+        <Login />
+      )}
     </div>
   );
 }
